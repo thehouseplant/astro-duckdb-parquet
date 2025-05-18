@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "^1.29.1-dev132.0",
+    "apache-arrow": "^20.0.0",
     "astro": "^5.7.13"
   }
 }
