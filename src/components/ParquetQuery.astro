@@ -1,0 +1,110 @@
+---
+import { queryParquetFile } from "../utils/duckdb";
+
+interface Props {
+  parquetUrl: string;
+  sqlQuery: string;
+  title?: string;
+}
+
+const { parquetUrl, sqlQuery, title } = Astro.props;
+---
+
+<div class="parquet-query-component">
+    {title && <h2>{title}</h2>}
+    <div class="loading">Loading data...</div>
+    <div class="error" style="display: none; color: red;"></div>
+    <div class="results">
+        <table style="display: none;">
+            <thead>
+                <tr id="header-row"></tr>
+            </thead>
+            <tbody id="data-rows"></tbody>
+        </table>
+    </div>
+</div>
+
+<script define:vars={{ parquetUrl, sqlQuery }}>
+  async function loadData() {
+    try {
+      // Dynamically import the DuckDB module
+      const duckdbModule = await import('../utils/duckdb');
+
+      // Query the Parquet file
+      const data = await duckdbModule.queryParquetFile(parquetUrl, sqlQuery);
+
+      if (data && data.length > 0) {
+        // Get the container elements
+        const loadingEl = document.querySelector('.loading');
+        const tableEl = document.querySelector('.results table');
+        const headerRowEl = document.querySelector('#header-row');
+        const dataRowsEl = document.querySelector('#data-rows');
+
+        // Hide loading message
+        if (loadingEl) loadingEl.style.display = 'none';
+
+        // Show the table
+        if (tableEl) tableEl.style.display = 'table';
+
+        // Get column names from the first row
+        const columns = Object.keys(data[0]);
+
+        // Create header row
+        if (headerRowEl) {
+          headerRowEl.innerHTML = columns.map(col => `<th>${col}</th>`).join('');
+        }
+
+        // Create data rows
+        if (dataRowsEl) {
+          dataRowsEl.innerHTML = data.map(row => {
+            return `<tr>${columns.map(col => `<td>${row[col]}</td>`).join('')}</tr>`;
+          }).join('');
+        }
+      }
+    } catch (error) {
+      console.error(`Error loading data:`, error);
+      const loadingEl = document.querySelector('.loading');
+      const errorEl = document.querySelector('.error');
+
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (errorEl) {
+        errorEl.textContent = `Error loading data: ${error.message}`;
+        errorEl.style.display = 'block';
+      }
+    }
+  }
+
+  // Execute when the component is mounted
+  document.addEventListener('DOMContentLoaded', loadData);
+</script>
+
+<style>
+    .parquet-query-component {
+        margin: 1rem 0;
+        padding: 1rem;
+        border: 1px solid #eaeaea;
+        border-radius: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th, td {
+        padding: 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    th {
+        background-color: #f9f9f9;
+        font-weight: bold;
+    }
+
+    .loading {
+        padding: 1rem 0;
+        color: #666;
+    }
+</style>
