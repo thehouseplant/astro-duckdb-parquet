@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="About">
+    <main>
+        <h1>About</h1>
+
+        <section>
+            <h2>Technology Stack</h2>
+            <p>
+                This application demonstrates how to build a static site that can query and analyze Parquet files directly in the browser using:
+            </p>
+            <ul>
+                <li><strong>Astro</strong> - A modern static site generator with excellent performance</li>
+                <li><strong>DuckDB WASM</strong> - In-browser SQL analytics engine</li>
+                <li><strong>Parquet</strong> - Efficient columnar storage format</li>
+                <li><strong>Cloudflare R2</strong> - Object storage for hosting Parquet files</li>
+                <li><strong>Cloudflare Pages</strong> - For hosting the static site</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>How It Works</h2>
+            <p>
+                The application works entirely client-side. When you load a page:
+            </p>
+            <ol>
+                <li>DuckDB WASM is initialized in your browser</li>
+                <li>Parquet files are fetched directly from Cloudflare R2</li>
+                <li>SQL queries run directly in your browser against the Parquet data</li>
+                <li>Results are displayed without requiring any server-side processing</li>
+            </ol>
+            <p>
+                This architecture provides extremely fast analytics with no backend server required.
+            </p>
+        </section>
+
+        <section>
+            <h2>Getting Started</h2>
+            <p>
+                To use this project with your own data:
+            </p>
+            <ol>
+                <li>Upload your Parquet files to Cloudflare R2</li>
+                <li>Configure CORS settings on your R2 bucket to allow browser access</li>
+                <li>Update the ParquetQuery components with your file URLs and custom SQL queries</li>
+                <li>Deploy to Cloudflare Pages</li>
+            </ol>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 100%;
+        max-width: 800px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        color: var(--accent);
+    }
+
+    section {
+        margin-bottom: 2.5rem;
+    }
+
+    ul, ol {
+        padding-left: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+</style>
