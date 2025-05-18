@@ -1,0 +1,27 @@
+# Configuration for Cloudflare Pages
+# https://developers.cloudflare.com/pages/platform/headers/
+
+# Cross-Origin headers for accessing Parquet files from R2
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+# Cache settings for DuckDB WASM files
+[[headers]]
+  for = "/duckdb-*.wasm"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/duckdb-browser-*.worker.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "application/javascript"
+
+# Redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
