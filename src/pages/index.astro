@@ -1,16 +1,49 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import ParquetQuery from "../components/ParquetQuery.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Astro DuckDB Parquet Demo">
+    <main>
+        <h1>Home</h1>
+
+        <div class="dashboard-grid">
+            <ParquetQuery
+                title="Test"
+                parquetUrl="https://demo-r2-bucket/dataset.parquet"
+                sqlQuery="SELECT * FROM 'data.parquet' LIMIT 10"
+            />
+        </div>
+    </main>
+</Layout>
+
+<style>
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 100%;
+        max-width: 1200px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-grid {
+        grid-template-columns: 1fr;
+        }
+    }
+</style>
