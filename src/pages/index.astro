@@ -14,44 +14,100 @@ import "../layouts/Layout.astro"
         }
     </style>
 </head>
-<body class="bg-gray-100 p-4 sm:p-6 md:p-8">
-    <div class="w-full max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+<body>
 
-        <header class="text-center mb-6">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">DuckDB WASM Parquet Viewer</h1>
-            <p class="mt-2 text-md text-gray-600">Select a local Parquet file to analyze it directly in your browser.</p>
-        </header>
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
 
-        <main>
-            <!-- File Selection Section -->
-            <div class="mb-6">
-                <label for="file-upload" class="sr-only">Choose file</label>
-                <input type="file" id="file-upload" accept=".parquet" class="hidden">
-                <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                     <button id="file-select-button" class="file-input-button w-full sm:w-auto flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg shadow-sm">
-                        Choose Parquet File
-                    </button>
-                    <div id="file-name-display" class="w-full text-center sm:text-left text-sm text-gray-500 bg-gray-50 rounded-md p-2 border truncate">
-                        No file selected
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-bold text-indigo-600">Parquet Viewer</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="/" class="bg-indigo-600 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
+                            <a href="/about" class="text-gray-500 hover:bg-gray-100 hover:text-gray-900 rounded-md px-3 py-2 text-sm font-medium">About</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Query and Control Section -->
-            <div class="mb-6">
-                 <button id="run-query-button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                    Load & Query Data
-                </button>
-            </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center rounded-md bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-200" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg id="menu-open-icon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                        <svg id="menu-close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
 
-            <!-- Status and Results Section -->
-            <div id="status" class="text-center p-4 my-4 rounded-md bg-gray-50 border border-gray-200 hidden"></div>
-
-            <div id="results-container" class="overflow-x-auto">
-                <!-- Results table will be inserted here -->
             </div>
-        </main>
+        </div>
+
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                <a href="/" class="bg-indigo-600 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Home</a>
+                <a href="/about" class="text-gray-500 hover:bg-gray-100 hover:text-gray-900 block rounded-md px-3 py-2 text-base font-medium">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Page Content -->
+    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div class="w-full bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <header class="text-center mb-6">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Parquet File Viewer</h1>
+                <p class="mt-2 text-md text-gray-600">Select a local Parquet file to analyze it directly in your browser.</p>
+            </header>
+            <main>
+                <!-- File Selection Section -->
+                <div class="mb-6">
+                    <label for="file-upload" class="sr-only">Choose file</label>
+                    <input type="file" id="file-upload" accept=".parquet" class="hidden">
+                    <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button id="file-select-button" class="btn btn-indigo w-full sm:w-auto flex-shrink-0">
+                            Choose Parquet File
+                        </button>
+                        <div id="file-name-display" class="w-full text-center sm:text-left text-sm text-gray-500 bg-gray-50 rounded-md p-2 border truncate">
+                            No file selected
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Query and Control Section -->
+                <div class="mb-6">
+                    <button id="run-query-button" class="btn btn-green" disabled>
+                        Load & Query Data
+                    </button>
+                </div>
+
+                <!-- Status and Results Section -->
+                <div id="status" class="text-center p-4 my-4 rounded-md bg-gray-50 border border-gray-200 hidden"></div>
+
+                <div id="results-container" class="overflow-x-auto">
+                    <!-- Results table will be inserted here -->
+                </div>
+            </main>
+        </div>
     </div>
+
+    <script>
+        // JavaScript to toggle the mobile menu
+        const mobileMenuButton: any = document.getElementById('mobile-menu-button');
+        const mobileMenu: any = document.getElementById('mobile-menu');
+        const openIcon: any = document.getElementById('menu-open-icon');
+        const closeIcon: any = document.getElementById('menu-close-icon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            openIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+    </script>
 
     <script type="module">
         // Import the DuckDB-WASM library
