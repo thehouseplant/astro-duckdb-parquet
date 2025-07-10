@@ -1,0 +1,220 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout>
+    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div class="w-full bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <header class="text-center mb-6">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Parquet File Upload</h1>
+                <p class="mt-2 text-md text-gray-600">Select a local Parquet file to analyze it directly in your browser.</p>
+            </header>
+            <main>
+                <!-- File Selection Section -->
+                <div class="mb-6">
+                    <label for="file-upload" class="sr-only">Choose file</label>
+                    <input type="file" id="file-upload" accept=".parquet" class="hidden">
+                    <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                            <button id="file-select-button" class="file-input-button w-full sm:w-auto flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg shadow-sm">
+                            Choose Parquet File
+                        </button>
+                        <div id="file-name-display" class="w-full text-center sm:text-left text-sm text-gray-500 bg-gray-50 rounded-md p-2 border truncate">
+                            No file selected
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Query and Control Section -->
+                <div class="mb-6">
+                    <button id="run-query-button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                        Load & Query Data
+                    </button>
+                </div>
+
+                <!-- Status and Results Section -->
+                <div id="status" class="text-center p-4 my-4 rounded-md bg-gray-50 border border-gray-200 hidden"></div>
+
+                <div id="results-container" class="overflow-x-auto">
+                    <!-- Results table will be inserted here -->
+                </div>
+            </main>
+        </div>
+    </div>
+</Layout>
+
+<script type="module">
+    // Import the DuckDB-WASM library
+    import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
+
+    // DOM element references
+    const fileUpload = document.getElementById('file-upload');
+    const fileSelectButton = document.getElementById('file-select-button');
+    const fileNameDisplay = document.getElementById('file-name-display');
+    const runQueryButton = document.getElementById('run-query-button');
+    const statusDiv = document.getElementById('status');
+    const resultsContainer = document.getElementById('results-container');
+
+    let db;
+    let selectedFile = null;
+
+    // Initialize DuckDB WASM
+    async function initializeDuckDB() {
+        setStatus('Initializing DuckDB...', 'loading');
+        try {
+            const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+            const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+
+            const worker_url = URL.createObjectURL(
+                new Blob([`importScripts("${bundle.mainWorker}");`], {type: 'text/javascript'})
+            );
+
+            const worker = new Worker(worker_url);
+            const logger = new duckdb.ConsoleLogger();
+            db = new duckdb.AsyncDuckDB(logger, worker);
+
+            await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+            URL.revokeObjectURL(worker_url);
+
+            setStatus('DuckDB Initialized. Please select a file.', 'success');
+        } catch (error) {
+            console.error('DuckDB Initialization Error:', error);
+            setStatus('Failed to initialize DuckDB. Check console for details.', 'error');
+        }
+    }
+
+    // Trigger file input when the custom button is clicked
+    fileSelectButton.addEventListener('click', () => fileUpload.click());
+
+    // Handle the file selection
+    fileUpload.addEventListener('change', (e) => {
+        selectedFile = e.target.files[0];
+        if (selectedFile) {
+            fileNameDisplay.textContent = selectedFile.name;
+            runQueryButton.disabled = false;
+            setStatus('File selected. Ready to run query.', 'info');
+        } else {
+            fileNameDisplay.textContent = 'No file selected';
+            runQueryButton.disabled = true;
+            selectedFile = null;
+        }
+    });
+
+    // Main function to run when the query button is clicked
+    runQueryButton.addEventListener('click', async () => {
+        if (!db || !selectedFile) {
+            setStatus('Please initialize DuckDB and select a file first.', 'error');
+            return;
+        }
+
+        setStatus('Reading file into memory...', 'loading');
+        resultsContainer.innerHTML = '';
+
+        try {
+            // Read the file into a buffer first to ensure it's fully loaded.
+            const buffer = await selectedFile.arrayBuffer();
+
+            setStatus('Registering file with DuckDB...', 'loading');
+            // Register the file buffer with DuckDB. This is more reliable than registerFileHandle.
+            await db.registerFileBuffer(selectedFile.name, new Uint8Array(buffer));
+
+            // Establish a connection to the database
+            const conn = await db.connect();
+
+            setStatus('Processing file and running query...', 'loading');
+            // The SQL query to run. We use the registered file name.
+            // DuckDB SQL uses single quotes for file paths.
+            const query = `SELECT * FROM '${selectedFile.name}' LIMIT 50;`;
+
+            // Send the query and wait for the results
+            const result = await conn.query(query);
+
+            // Close the connection
+            await conn.close();
+
+            // Display the results in a table
+            displayResults(result);
+            setStatus(`Successfully queried '${selectedFile.name}'. Showing first ${result.numRows} rows.`, 'success');
+
+        } catch (error) {
+            console.error('Query Error:', error);
+            setStatus(`Error querying file: ${error.message}`, 'error');
+        }
+    });
+
+    // Function to display status messages
+    function setStatus(message, type = 'info') {
+        statusDiv.textContent = message;
+        statusDiv.className = 'text-center p-4 my-4 rounded-md border'; // Reset classes
+        statusDiv.hidden = false;
+
+        switch(type) {
+            case 'loading':
+                statusDiv.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-800');
+                break;
+            case 'success':
+                 statusDiv.classList.add('bg-green-50', 'border-green-200', 'text-green-800');
+                break;
+            case 'error':
+                 statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
+                break;
+            case 'info':
+            default:
+                 statusDiv.classList.add('bg-gray-50', 'border-gray-200', 'text-gray-800');
+                break;
+        }
+    }
+
+    // Function to render query results into an HTML table
+    function displayResults(data) {
+        if (!data || data.numRows === 0) {
+            resultsContainer.innerHTML = '<p class="text-center text-gray-500">Query returned no results.</p>';
+            return;
+        }
+
+        const table = document.createElement('table');
+        table.className = 'min-w-full divide-y divide-gray-200';
+
+        const thead = document.createElement('thead');
+        thead.className = 'bg-gray-50';
+        const headerRow = document.createElement('tr');
+
+        // Get schema for column names
+        const schema = data.schema;
+        schema.fields.forEach(field => {
+            const th = document.createElement('th');
+            th.scope = 'col';
+            th.className = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
+            th.textContent = field.name;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        tbody.className = 'bg-white divide-y divide-gray-200';
+
+        // Convert Arrow data to an array of objects for easier rendering
+        const dataArray = data.toArray();
+
+        dataArray.forEach(row => {
+            const tr = document.createElement('tr');
+            const rowData = row.toJSON();
+            schema.fields.forEach(field => {
+                const td = document.createElement('td');
+                td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700';
+                const value = rowData[field.name];
+                // Handle null/undefined values gracefully
+                td.textContent = (value === null || value === undefined) ? 'NULL' : value.toString();
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        resultsContainer.innerHTML = ''; // Clear previous results
+        resultsContainer.appendChild(table);
+    }
+
+    // Start the initialization process when the script loads
+    initializeDuckDB();
+</script>
