@@ -1,289 +1,229 @@
 ---
-import "../layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro"
 ---
 
-<!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-50">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuckDB WASM Parquet Viewer</title>
-    <style>
-        .file-input-button {
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-md">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="flex h-16 items-center justify-between">
-
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <span class="text-2xl font-bold text-indigo-600">Parquet Viewer</span>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-4">
-                            <a href="/" class="bg-indigo-600 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
-                            <a href="/about" class="text-gray-500 hover:bg-gray-100 hover:text-gray-900 rounded-md px-3 py-2 text-sm font-medium">About</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="-mr-2 flex md:hidden">
-                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center rounded-md bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-200" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <svg id="menu-open-icon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                        <svg id="menu-close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                <a href="/" class="bg-indigo-600 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Home</a>
-                <a href="/about" class="text-gray-500 hover:bg-gray-100 hover:text-gray-900 block rounded-md px-3 py-2 text-base font-medium">About</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Page Content -->
+<Layout>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div class="w-full bg-white rounded-xl shadow-lg p-6 md:p-8">
             <header class="text-center mb-6">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Parquet File Viewer</h1>
-                <p class="mt-2 text-md text-gray-600">Select a local Parquet file to analyze it directly in your browser.</p>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Seattle Pet Registrations</h1>
+                <p class="mt-2 text-md text-gray-600">Search through the database of Seattle pet registrations, by any column in the parquet file.</p>
             </header>
             <main>
-                <!-- File Selection Section -->
-                <div class="mb-6">
-                    <label for="file-upload" class="sr-only">Choose file</label>
-                    <input type="file" id="file-upload" accept=".parquet" class="hidden">
-                    <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                            <button id="file-select-button" class="file-input-button w-full sm:w-auto flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg shadow-sm">
-                            Choose Parquet File
+                <div id="parquet-container">
+                    <div class="mb-4 flex items-center">
+                        <select id="column-select" class="h-10 border-gray-300 border-r-0 border p-2 rounded-l-md focus:ring-blue-500 focus:border-blue-500"></select>
+                        <input type="text" id="search-input" class="h-10 block w-full border-gray-300 border p-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
+                        <button id="search-button" class="h-10 bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            Search
                         </button>
-                        <div id="file-name-display" class="w-full text-center sm:text-left text-sm text-gray-500 bg-gray-50 rounded-md p-2 border truncate">
-                            No file selected
-                        </div>
                     </div>
-                </div>
 
-                <!-- Query and Control Section -->
-                <div class="mb-6">
-                    <button id="run-query-button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-sm disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                        Load & Query Data
-                    </button>
-                </div>
-
-                <!-- Status and Results Section -->
-                <div id="status" class="text-center p-4 my-4 rounded-md bg-gray-50 border border-gray-200 hidden"></div>
-
-                <div id="results-container" class="overflow-x-auto">
-                    <!-- Results table will be inserted here -->
+                    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+                        <div id="spinner" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center hidden">
+                            <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <table id="data-table" class="w-full text-sm text-left text-gray-500">
+                            <thead id="table-head" class="text-xs text-gray-700 uppercase bg-gray-50">
+                                </thead>
+                            <tbody id="table-body">
+                                </tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
+</Layout>
 
-    <script>
-        // JavaScript to toggle the mobile menu
-        const mobileMenuButton: any = document.getElementById('mobile-menu-button');
-        const mobileMenu: any = document.getElementById('mobile-menu');
-        const openIcon: any = document.getElementById('menu-open-icon');
-        const closeIcon: any = document.getElementById('menu-close-icon');
+<style>
+    .spinner-border {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+    }
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+</style>
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            openIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
+<script>
+    import * as duckdb from '@duckdb/duckdb-wasm';
+
+    const PARQUET_URL = 'https://pub-e8c2549a621b4395b169873f5aec1b37.r2.dev/seattle_pet_licenses.parquet';
+
+    const COLUMN_MAP = {
+        'license_issue_date': 'Issue Date',
+        'license_number': 'Number',
+        'animal_name': 'Name',
+        'species': 'Species',
+        'primary_breed': 'Primary Breed',
+        'secondary_breed': 'Secondary Breed',
+        'zip_code': 'ZIP Code'
+    }
+
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+    const columnSelect = document.getElementById('column-select');
+    const tableHead = document.getElementById('table-head');
+    const tableBody = document.getElementById('table-body');
+    const spinner = document.getElementById('spinner');
+
+    let db: any; // Keep the database instance in a broader scope
+
+    // Custom replacer function to handle BigInt
+    const replacer = (key: any, value: any) => typeof value === 'bigint' ? value.toString() : value;
+
+    // --- Function to populate the column dropdown ---
+    function populateColumnSelect(headers) {
+        columnSelect.innerHTML = '';
+        headers.forEach(header => {
+            const option = document.createElement('option');
+            option.value = header;
+            // Use the friendly name for the text, or the raw name if not in the map
+            option.textContent = COLUMN_MAP[header] || header;
+            columnSelect.appendChild(option);
         });
-    </script>
+    }
 
-    <script type="module">
-        // Import the DuckDB-WASM library
-        import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm';
+    // --- Function to render data into the table ---
+    function renderTable(dataArray) {
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
 
-        // DOM element references
-        const fileUpload = document.getElementById('file-upload');
-        const fileSelectButton = document.getElementById('file-select-button');
-        const fileNameDisplay = document.getElementById('file-name-display');
-        const runQueryButton = document.getElementById('run-query-button');
-        const statusDiv = document.getElementById('status');
-        const resultsContainer = document.getElementById('results-container');
+        if (dataArray.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="100%" class="text-center p-4">No results found.</td></tr>';
+            return;
+        }
 
-        let db;
-        let selectedFile = null;
+        const headers = Object.keys(dataArray[0]);
+        if (columnSelect.options.length === 0) {
+            populateColumnSelect(headers);
+        }
 
-        // Initialize DuckDB WASM
-        async function initializeDuckDB() {
-            setStatus('Initializing DuckDB...', 'loading');
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.scope = 'col';
+            th.className = 'px-6 py-3';
+            // Use the friendly name for the header, or the raw name if not in the map
+            th.textContent = COLUMN_MAP[headerText] || headerText;
+            headerRow.appendChild(th);
+        });
+        tableHead.appendChild(headerRow);
+
+        dataArray.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = 'bg-white border-b hover:bg-gray-50';
+            headers.forEach(header => {
+                const td = document.createElement('td');
+                td.className = 'px-6 py-4';
+                td.textContent = replacer(null, row[header]);
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    }
+
+    // --- Function to query data ---
+    async function queryData(searchTerm = '') {
+        if (!db) return;
+        spinner.classList.remove('hidden');
+
+        setTimeout(async () => {
+            try {
+                const c = await db.connect();
+                let query;
+                const searchColumn = columnSelect.value;
+
+                if (searchTerm && searchColumn) {
+                    switch (searchColumn) {
+                        case "license_issue_date":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" ILIKE '%${searchTerm}%'`;
+                            break;
+                        case "license_number":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" = '${searchTerm}'`;
+                            break;
+                        case "animal_name":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" ILIKE '%${searchTerm}%'`;
+                            break;
+                        case "species":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" ILIKE '%${searchTerm}%'`;
+                            break;
+                        case "primary_breed":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" ILIKE '%${searchTerm}%'`;
+                            break;
+                        case "secondary_breed":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" ILIKE '%${searchTerm}%'`;
+                            break;
+                        case "zip_code":
+                            query = `SELECT * FROM '${PARQUET_URL}' WHERE "${searchColumn}" = '${searchTerm}'`;
+                            break;
+                    }
+                } else {
+                    query = `SELECT * FROM '${PARQUET_URL}'`;
+                }
+
+                const data = await c.query(query);
+                await c.close();
+
+                const dataArray = data.toArray().map((row) => row.toJSON());
+                renderTable(dataArray);
+
+            } catch (error) {
+                console.error(error);
+                tableBody.innerHTML = '<tr><td colspan="100%" class="text-center p-4 text-red-500">Error querying data.</td></tr>';
+            } finally {
+                spinner.classList.add('hidden');
+            }
+        }, 0);
+    }
+
+    // --- Initialize DuckDB and load initial data ---
+    async function setup() {
+        spinner.classList.remove('hidden');
+
+        setTimeout(async () => {
             try {
                 const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
                 const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
-
                 const worker_url = URL.createObjectURL(
-                    new Blob([`importScripts("${bundle.mainWorker}");`], {type: 'text/javascript'})
+                    new Blob([`importScripts("${bundle.mainWorker}");`], {
+                        type: 'text/javascript',
+                    })
                 );
 
                 const worker = new Worker(worker_url);
                 const logger = new duckdb.ConsoleLogger();
                 db = new duckdb.AsyncDuckDB(logger, worker);
-
                 await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
                 URL.revokeObjectURL(worker_url);
 
-                setStatus('DuckDB Initialized. Please select a file.', 'success');
-            } catch (error) {
-                console.error('DuckDB Initialization Error:', error);
-                setStatus('Failed to initialize DuckDB. Check console for details.', 'error');
-            }
-        }
-
-        // Trigger file input when the custom button is clicked
-        fileSelectButton.addEventListener('click', () => fileUpload.click());
-
-        // Handle the file selection
-        fileUpload.addEventListener('change', (e) => {
-            selectedFile = e.target.files[0];
-            if (selectedFile) {
-                fileNameDisplay.textContent = selectedFile.name;
-                runQueryButton.disabled = false;
-                setStatus('File selected. Ready to run query.', 'info');
-            } else {
-                fileNameDisplay.textContent = 'No file selected';
-                runQueryButton.disabled = true;
-                selectedFile = null;
-            }
-        });
-
-        // Main function to run when the query button is clicked
-        runQueryButton.addEventListener('click', async () => {
-            if (!db || !selectedFile) {
-                setStatus('Please initialize DuckDB and select a file first.', 'error');
-                return;
-            }
-
-            setStatus('Reading file into memory...', 'loading');
-            resultsContainer.innerHTML = '';
-
-            try {
-                // Read the file into a buffer first to ensure it's fully loaded.
-                const buffer = await selectedFile.arrayBuffer();
-
-                setStatus('Registering file with DuckDB...', 'loading');
-                // Register the file buffer with DuckDB. This is more reliable than registerFileHandle.
-                await db.registerFileBuffer(selectedFile.name, new Uint8Array(buffer));
-
-                // Establish a connection to the database
-                const conn = await db.connect();
-
-                setStatus('Processing file and running query...', 'loading');
-                // The SQL query to run. We use the registered file name.
-                // DuckDB SQL uses single quotes for file paths.
-                const query = `SELECT * FROM '${selectedFile.name}' LIMIT 50;`;
-
-                // Send the query and wait for the results
-                const result = await conn.query(query);
-
-                // Close the connection
-                await conn.close();
-
-                // Display the results in a table
-                displayResults(result);
-                setStatus(`Successfully queried '${selectedFile.name}'. Showing first ${result.numRows} rows.`, 'success');
+                await queryData();
 
             } catch (error) {
-                console.error('Query Error:', error);
-                setStatus(`Error querying file: ${error.message}`, 'error');
+                console.error(error);
+                tableBody.innerHTML = '<tr><td colspan="100%" class="text-center p-4 text-red-500">Error initializing DuckDB.</td></tr>';
+            } finally {
+                spinner.classList.add('hidden');
             }
-        });
+        }, 0);
+    }
 
-        // Function to display status messages
-        function setStatus(message, type = 'info') {
-            statusDiv.textContent = message;
-            statusDiv.className = 'text-center p-4 my-4 rounded-md border'; // Reset classes
-            statusDiv.hidden = false;
+    // --- EVENT LISTENERS ---
+    searchButton.addEventListener('click', () => {
+        queryData(searchInput.value);
+    });
 
-            switch(type) {
-                case 'loading':
-                    statusDiv.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-800');
-                    break;
-                case 'success':
-                     statusDiv.classList.add('bg-green-50', 'border-green-200', 'text-green-800');
-                    break;
-                case 'error':
-                     statusDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
-                    break;
-                case 'info':
-                default:
-                     statusDiv.classList.add('bg-gray-50', 'border-gray-200', 'text-gray-800');
-                    break;
-            }
-        }
-
-        // Function to render query results into an HTML table
-        function displayResults(data) {
-            if (!data || data.numRows === 0) {
-                resultsContainer.innerHTML = '<p class="text-center text-gray-500">Query returned no results.</p>';
-                return;
-            }
-
-            const table = document.createElement('table');
-            table.className = 'min-w-full divide-y divide-gray-200';
-
-            const thead = document.createElement('thead');
-            thead.className = 'bg-gray-50';
-            const headerRow = document.createElement('tr');
-
-            // Get schema for column names
-            const schema = data.schema;
-            schema.fields.forEach(field => {
-                const th = document.createElement('th');
-                th.scope = 'col';
-                th.className = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
-                th.textContent = field.name;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-
-            const tbody = document.createElement('tbody');
-            tbody.className = 'bg-white divide-y divide-gray-200';
-
-            // Convert Arrow data to an array of objects for easier rendering
-            const dataArray = data.toArray();
-
-            dataArray.forEach(row => {
-                const tr = document.createElement('tr');
-                const rowData = row.toJSON();
-                schema.fields.forEach(field => {
-                    const td = document.createElement('td');
-                    td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-700';
-                    const value = rowData[field.name];
-                    // Handle null/undefined values gracefully
-                    td.textContent = (value === null || value === undefined) ? 'NULL' : value.toString();
-                    tr.appendChild(td);
-                });
-                tbody.appendChild(tr);
-            });
-
-            table.appendChild(tbody);
-            resultsContainer.innerHTML = ''; // Clear previous results
-            resultsContainer.appendChild(table);
-        }
-
-        // Start the initialization process when the script loads
-        initializeDuckDB();
-    </script>
-</body>
-</html>
+    // --- Start the setup ---
+    setup();
+</script>
