@@ -1,6 +1,6 @@
-# Astro DuckDB Parquet
+# Astro Parquet Viewer
 
-A sample project to showcase using DuckDB WASM to load a parquet file in an Astro static site.
+A sample project to showcase using DuckDB WASM to load an interact with parquet files on an Astro static site.
 
 ## Getting Started
 
