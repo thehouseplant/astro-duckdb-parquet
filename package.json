@@ -12,6 +12,7 @@
     "@duckdb/duckdb-wasm": "^1.29.1-dev132.0",
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.11.0",
+    "flowbite": "^3.1.2",
     "tailwindcss": "^4.1.10"
   }
 }
