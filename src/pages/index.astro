@@ -4,57 +4,53 @@ import Layout from "../layouts/Layout.astro"
 
 <Layout>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-        <div class="w-full bg-white rounded-xl shadow-lg p-6 md:p-8">
-            <header class="text-center mb-6">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Seattle Pet Registrations</h1>
-                <p class="mt-2 text-md text-gray-600">Search through the database of Seattle pet registrations, by any column in the parquet file.</p>
-            </header>
-            <main>
-                <div id="parquet-container">
-                    <div class="mb-4 flex items-center">
-                        <select id="column-select" class="h-10 border-gray-300 border-r-0 border p-2 rounded-l-md focus:ring-blue-500 focus:border-blue-500"></select>
-                        <input type="text" id="search-input" class="h-10 block w-full border-gray-300 border p-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Search..." />
-                        <button id="search-button" class="h-10 bg-blue-500 text-white p-2 rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                            Search
+        <section class="bg-white dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Seattle Pet Registrations</h1>
+                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Search through the database of Seattle pet registrations.</p>
+            </div>
+        </section>
+
+        <div id="parquet-container">
+            <div class="py-5">
+                <div class="flex">
+                    <select id="column-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></select>
+                    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
+                        <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Shopping</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Images</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">News</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Finance</a>
+                        </li>
+                        </ul>
+                    </div>
+                    <div class="relative w-full">
+                        <input type="search" id="search-input" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search..." required />
+                        <button id="search-button" class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
                         </button>
                     </div>
-
-                    <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-                        <div id="spinner" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center hidden">
-                            <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <table id="data-table" class="w-full text-sm text-left text-gray-500">
-                            <thead id="table-head" class="text-xs text-gray-700 uppercase bg-gray-50">
-                                </thead>
-                            <tbody id="table-body">
-                                </tbody>
-                        </table>
-                    </div>
                 </div>
-            </main>
+            </div>
+
+            <div class="relative overflow-x-auto">
+                <table id="data-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead id="table-head" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </Layout>
-
-<style>
-    .spinner-border {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #3498db;
-    }
-    .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-    }
-</style>
 
 <script>
     import * as duckdb from '@duckdb/duckdb-wasm';
@@ -76,7 +72,6 @@ import Layout from "../layouts/Layout.astro"
     const columnSelect = document.getElementById('column-select');
     const tableHead = document.getElementById('table-head');
     const tableBody = document.getElementById('table-body');
-    const spinner = document.getElementById('spinner');
 
     let db: any; // Keep the database instance in a broader scope
 
@@ -101,7 +96,7 @@ import Layout from "../layouts/Layout.astro"
         tableBody.innerHTML = '';
 
         if (dataArray.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="100%" class="text-center p-4">No results found.</td></tr>';
+            tableBody.innerHTML = '<tr class="g-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"><td colspan="100%" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No results found.</td></tr>';
             return;
         }
 
@@ -123,10 +118,10 @@ import Layout from "../layouts/Layout.astro"
 
         dataArray.forEach(row => {
             const tr = document.createElement('tr');
-            tr.className = 'bg-white border-b hover:bg-gray-50';
+            tr.className = 'g-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600';
             headers.forEach(header => {
                 const td = document.createElement('td');
-                td.className = 'px-6 py-4';
+                td.className = 'px-6 py-3';
                 td.textContent = replacer(null, row[header]);
                 tr.appendChild(td);
             });
@@ -137,7 +132,6 @@ import Layout from "../layouts/Layout.astro"
     // --- Function to query data ---
     async function queryData(searchTerm = '') {
         if (!db) return;
-        spinner.classList.remove('hidden');
 
         setTimeout(async () => {
             try {
@@ -181,17 +175,13 @@ import Layout from "../layouts/Layout.astro"
 
             } catch (error) {
                 console.error(error);
-                tableBody.innerHTML = '<tr><td colspan="100%" class="text-center p-4 text-red-500">Error querying data.</td></tr>';
-            } finally {
-                spinner.classList.add('hidden');
+                tableBody.innerHTML = '<tr><td colspan="100%" class="text-center px-6 py-3 text-red-500">Error querying data.</td></tr>';
             }
         }, 0);
     }
 
     // --- Initialize DuckDB and load initial data ---
     async function setup() {
-        spinner.classList.remove('hidden');
-
         setTimeout(async () => {
             try {
                 const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
@@ -212,9 +202,7 @@ import Layout from "../layouts/Layout.astro"
 
             } catch (error) {
                 console.error(error);
-                tableBody.innerHTML = '<tr><td colspan="100%" class="text-center p-4 text-red-500">Error initializing DuckDB.</td></tr>';
-            } finally {
-                spinner.classList.add('hidden');
+                tableBody.innerHTML = '<tr><td colspan="100%" class="text-center px-6 py-3 text-red-500">Error initializing DuckDB.</td></tr>';
             }
         }, 0);
     }
