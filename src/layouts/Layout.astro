@@ -12,8 +12,12 @@ import Header from "../components/Header.astro";
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Parquet Viewer</title>
 	</head>
-	<body>
+	<body class="bg-white border-gray-200 dark:bg-gray-900">
 	    <Header />
-		<slot />
+		<div class="container mx-auto py-6">
+	        <slot />
+		</div>
 	</body>
+
+	<script is:inline src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </html>
