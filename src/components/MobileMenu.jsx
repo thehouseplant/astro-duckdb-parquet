@@ -19,7 +19,7 @@ export default function MobileMenu() {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setIsOpen(false)}></div>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsOpen(false)}></div>
           <div className="fixed right-0 top-0 h-full w-3/4 max-w-sm bg-background border-l shadow-lg">
             <div className="flex items-center justify-between p-4 border-b">
               <span className="font-semibold">Menu</span>
