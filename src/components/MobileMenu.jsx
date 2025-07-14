@@ -47,13 +47,6 @@ export default function MobileMenu() {
               >
                 Upload
               </a>
-              <a
-                href="/charts"
-                className="text-lg font-medium transition-colors hover:text-primary"
-                onClick={() => setIsOpen(false)}
-              >
-                Charts
-              </a>
             </div>
           </div>
         </div>
