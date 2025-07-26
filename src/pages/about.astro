@@ -1,0 +1,349 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About - Parquet Viewer">
+  <main class="min-h-screen bg-background">
+    <!-- Hero Section -->
+    <section class="py-16 px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          About Parquet Viewer
+        </h1>
+        <p class="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          A modern, browser-based platform for exploring, analyzing, and visualizing parquet datasets
+          with powerful statistical tools and interactive charts.
+        </p>
+      </div>
+    </section>
+
+    <!-- Purpose Section -->
+    <section class="py-16 px-4 bg-muted/30">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-foreground mb-8 text-center">Our Mission</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-card p-6 rounded-lg border shadow-sm">
+            <div class="flex items-center mb-4">
+              <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-card-foreground">Data Accessibility</h3>
+            </div>
+            <p class="text-muted-foreground">
+              Making complex data analysis accessible to everyone, from researchers and analysts
+              to students and data enthusiasts, without requiring specialized software or technical setup.
+            </p>
+          </div>
+
+          <div class="bg-card p-6 rounded-lg border shadow-sm">
+            <div class="flex items-center mb-4">
+              <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-card-foreground">Performance</h3>
+            </div>
+            <p class="text-muted-foreground">
+              Leveraging modern web technologies and WebAssembly to provide fast, client-side
+              data processing that rivals desktop applications while maintaining privacy and security.
+            </p>
+          </div>
+
+          <div class="bg-card p-6 rounded-lg border shadow-sm">
+            <div class="flex items-center mb-4">
+              <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-card-foreground">Visualization</h3>
+            </div>
+            <p class="text-muted-foreground">
+              Transforming raw data into meaningful insights through interactive charts,
+              statistical analysis, and intuitive visualizations that reveal patterns and trends.
+            </p>
+          </div>
+
+          <div class="bg-card p-6 rounded-lg border shadow-sm">
+            <div class="flex items-center mb-4">
+              <svg class="h-8 w-8 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-card-foreground">Privacy First</h3>
+            </div>
+            <p class="text-muted-foreground">
+              All data processing happens locally in your browser. Your datasets never leave
+              your device, ensuring complete privacy and security for sensitive information.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="py-16 px-4">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-foreground mb-12 text-center">Built With Modern Technologies</h2>
+
+        <!-- Frontend Technologies -->
+        <div class="mb-12">
+          <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center">
+            <svg class="h-6 w-6 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            Frontend & User Interface
+          </h3>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">A</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Astro</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Modern static site generator that delivers lightning-fast performance with minimal JavaScript.
+                Enables server-side rendering and optimal loading speeds.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">TS</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">TypeScript</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Strongly-typed JavaScript that catches errors at compile time and provides
+                excellent developer experience with IntelliSense and refactoring tools.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">R</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">React</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Component-based library for building interactive user interfaces.
+                Provides reactive state management and efficient DOM updates for smooth user experiences.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-300 to-blue-400 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">TW</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Tailwind CSS</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Utility-first CSS framework that enables rapid UI development with consistent design patterns.
+                Includes dark mode support and responsive design utilities.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">RC</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Recharts</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Composable charting library built on React and D3. Provides beautiful,
+                interactive visualizations including bar charts, line charts, scatter plots, and more.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">LR</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Lucide React</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Beautiful, customizable SVG icons designed for modern web applications.
+                Provides consistent iconography throughout the interface.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Processing Technologies -->
+        <div class="mb-12">
+          <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center">
+            <svg class="h-6 w-6 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.79 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.79 4 8 4s8-1.79 8-4M4 7c0-2.21 3.79-4 8-4s8 1.79 8 4"></path>
+            </svg>
+            Data Processing & Analysis
+          </h3>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">DB</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">DuckDB-WASM</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                High-performance analytical database compiled to WebAssembly. Enables complex SQL queries
+                and data processing directly in the browser with near-native performance.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">PQ</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Apache Parquet</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Columnar storage format optimized for analytics workloads. Provides excellent compression
+                and query performance for large datasets with complex nested data structures.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-400 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">WA</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">WebAssembly</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Binary instruction format that enables near-native performance in web browsers.
+                Allows complex data processing operations to run efficiently on the client side.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Development Tools -->
+        <div>
+          <h3 class="text-2xl font-semibold text-foreground mb-6 flex items-center">
+            <svg class="h-6 w-6 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            Development & Build Tools
+          </h3>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">V</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Vite</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Lightning-fast build tool with hot module replacement and optimized production builds.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">N</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Node.js</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                JavaScript runtime that powers the development environment and build processes.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">ES</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">ESLint</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Code linting tool that ensures consistent code quality and catches potential issues.
+              </p>
+            </div>
+
+            <div class="bg-card p-6 rounded-lg border shadow-sm">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-red-600 rounded-lg flex items-center justify-center mr-3">
+                  <span class="text-white font-bold text-sm">P</span>
+                </div>
+                <h4 class="text-lg font-semibold text-card-foreground">Prettier</h4>
+              </div>
+              <p class="text-muted-foreground text-sm">
+                Code formatter that maintains consistent styling across the entire codebase.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Highlight -->
+    <section class="py-16 px-4 bg-muted/30">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-foreground mb-8">Key Features</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="flex flex-col items-center">
+            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+              <svg class="h-8 w-8 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-foreground mb-2">Easy Upload</h3>
+            <p class="text-muted-foreground">
+              Drag and drop parquet files or browse from your device. Instant processing with real-time feedback.
+            </p>
+          </div>
+
+          <div class="flex flex-col items-center">
+            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+              <svg class="h-8 w-8 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-foreground mb-2">Statistical Analysis</h3>
+            <p class="text-muted-foreground">
+              Comprehensive statistics, correlation analysis, and data profiling with interactive visualizations.
+            </p>
+          </div>
+
+          <div class="flex flex-col items-center">
+            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+              <svg class="h-8 w-8 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-foreground mb-2">Privacy Focused</h3>
+            <p class="text-muted-foreground">
+              All processing happens locally in your browser. Your data never leaves your device.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 px-4">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-foreground mb-4">Ready to Explore Your Data?</h2>
+        <p class="text-muted-foreground mb-8">
+          Start analyzing your parquet files today with our powerful, privacy-focused platform.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/pets" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90 transition-colors">
+            Browse Datasets
+          </a>
+          <a href="/upload" class="inline-flex items-center justify-center px-6 py-3 border border-border text-base font-medium rounded-md text-foreground bg-background hover:bg-accent transition-colors">
+            Upload Your Data
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
