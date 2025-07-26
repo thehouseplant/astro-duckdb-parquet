@@ -1,18 +1,65 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PetDataTable from '../components/PetDataTable.jsx';
+import Layout from '../layouts/Layout.astro'
 ---
 
-<Layout title="Pet Licenses - ParquetView">
-  <main class="container mx-auto px-4 py-8">
-    <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold mb-4">Seattle Pet License Dataset</h1>
-      <p class="text-muted-foreground max-w-2xl mx-auto">
-        Explore Seattle's pet license data with advanced filtering, sorting, and search capabilities.
-        Data is loaded directly from a Parquet file using DuckDB WebAssembly.
-      </p>
-    </div>
+<Layout title="Dataset Explorer - Parquet Data Viewer">
+  <main class="min-h-screen bg-background">
+    <!-- Hero Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+          Dataset Explorer
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-muted-foreground max-w-3xl mx-auto">
+          Explore diverse datasets from government data and financial markets to health statistics and sports analytics.
+          Upload your own files, load from URLs, or browse our curated collection of datasets across multiple domains.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+          <div class="flex items-center gap-2">
+            <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>25+ Curated Datasets</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>10+ Categories</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Local Processing</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Interactive Charts</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <PetDataTable client:load />
+    <!-- Dataset Viewer -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div id="multi-dataset-viewer"></div>
+      </div>
+    </section>
   </main>
 </Layout>
+
+<script>
+  import MultiDatasetViewer from '../components/MultiDatasetViewer.tsx'
+  import { createRoot } from 'react-dom/client'
+  import React from 'react'
+
+  const container = document.getElementById('multi-dataset-viewer')
+  if (container) {
+    const root = createRoot(container)
+    root.render(React.createElement(MultiDatasetViewer))
+  }
+</script>
