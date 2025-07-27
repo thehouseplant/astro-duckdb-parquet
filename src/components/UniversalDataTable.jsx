@@ -112,9 +112,9 @@ export default function UniversalDataTable({
       let query
       if (search && column) {
         // Build search query based on column type
-        query = `SELECT * FROM '${fileRef}' WHERE "${column}" ILIKE '%${search}%' LIMIT 1000`
+        query = `SELECT * FROM '${fileRef}' WHERE "${column}" ILIKE '%${search}%'`
       } else {
-        query = `SELECT * FROM '${fileRef}' LIMIT 1000`
+        query = `SELECT * FROM '${fileRef}'`
       }
 
       console.log("Executing query:", query)
